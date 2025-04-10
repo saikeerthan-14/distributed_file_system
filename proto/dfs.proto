@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package dfs;
+
+service DFS {
+  rpc Open(OpenRequest) returns (OpenResponse);
+  rpc Read(ReadRequest) returns (ReadResponse);
+  rpc Write(WriteRequest) returns (WriteResponse);
+  rpc Unlink(UnlinkRequest) returns (UnlinkResponse);
+  rpc GetAttr(GetAttrRequest) returns (GetAttrResponse);
+}
+
+message OpenRequest {
+  string path = 1;
+  string mode = 2; // e.g. "r", "w"
+}
+
+message OpenResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ReadRequest {
+  string path = 1;
+  int64 offset = 2;
+  int64 size = 3;
+}
+
+message ReadResponse {
+  bytes data = 1;
+  int64 bytes_read = 2;
+}
+
+message WriteRequest {
+  string path = 1;
+  int64 offset = 2;
+  bytes data = 3;
+  int64 mtime = 4;
+}
+
+message WriteResponse {
+  int64 bytes_written = 1;
+}
+
+message UnlinkRequest {
+  string path = 1;
+}
+
+message UnlinkResponse {
+  bool success = 1;
+}
+
+message GetAttrRequest {
+  string path = 1;
+}
+
+message GetAttrResponse {
+  int64 size = 1;
+  int64 mtime = 2;
+  bool exists = 3;
+}
