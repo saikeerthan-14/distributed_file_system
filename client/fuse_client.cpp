@@ -82,14 +82,25 @@ static int dfs_write(const char *path, const char *buf, size_t size, off_t offse
     return response.bytes_written();
 }
 
-static const struct fuse_operations dfs_ops = {
-    .getattr = dfs_getattr,
-    .read = dfs_read,
-    .write = dfs_write,
-    .create = dfs_create,
-};
+static int dfs_unlink(const char *path) {
+    dfs::UnlinkRequest request;
+    request.set_path(path + 1);
+    dfs::UnlinkResponse response;
+    grpc::ClientContext context;
+
+    auto status = stub_->Unlink(&context, request, &response);
+    return (status.ok() && response.success()) ? 0 : -ENOENT;
+}
+
+static struct fuse_operations dfs_ops = {};
+
 
 int main(int argc, char *argv[]) {
     stub_ = DFS::NewStub(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
+    dfs_ops.getattr = dfs_getattr;
+    dfs_ops.read = dfs_read;
+    dfs_ops.write = dfs_write;
+    dfs_ops.create = dfs_create;
+    dfs_ops.unlink = dfs_unlink;
     return fuse_main(argc, argv, &dfs_ops, nullptr);
 }

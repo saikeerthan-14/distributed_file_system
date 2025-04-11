@@ -44,7 +44,7 @@ public:
         request.set_offset(offset);
         request.set_data(content);
         // request.set_mtime(std::time(nullptr));
-        request.set_mtime(std::time(nullptr)-10000);
+        request.set_mtime(std::time(nullptr));
     
         dfs::WriteResponse response;
         grpc::ClientContext context;
