@@ -16,7 +16,7 @@ This project implements a mountable **Distributed File System (DFS)** in C++ usi
 - 🧠 **AFS-style versioning** with Last Writer Wins semantics  
 - 💾 **FUSE (Filesystem in Userspace)** for seamless Linux file system integration  
 
-Interact with it just like a regular file system — `echo`, `cat`, `rm`, etc. work exactly as expected!
+Interact with it just like a regular file system — `echo`, `cat`, `rm` etc. work exactly as expected!
 
 ---
 
